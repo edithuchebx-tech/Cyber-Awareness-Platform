@@ -96,35 +96,14 @@
         <p>Failure to act may result in removal from your GP surgery.</p>
 
         <div class="warning">
-            ⚠️ This is a safe simulation. Do not enter real personal information. Identify the suspicious elements below.
-        </div>
-
-        <div class="red-flags">
-            <span class="red-flag" onclick="checkFlag(this, true)">Generic greeting (“Dear Patient”)</span>
-            <span class="red-flag" onclick="checkFlag(this, true)">Urgency / threat to act</span>
-            <span class="red-flag" onclick="checkFlag(this, true)">Suspicious link</span>
-            <span class="red-flag" onclick="checkFlag(this, false)">GP logo</span>
-            <span class="red-flag" onclick="checkFlag(this, false)">Normal font</span>
+            ⚠️ This is a safe simulation.  
         </div>
 
         <div class="back-link">
-            <a href="notice.html">← Back to Notice Page</a>
+            <a href="vaccination-red-flag.html">← Click to identify the red flags </a>
         </div>
     </div>
 
-    <script>
-        function checkFlag(element, isCorrect) {
-            if (isCorrect) {
-                element.classList.add('correct');
-                element.innerText = element.innerText + " ✅ Correct!";
-            } else {
-                element.style.backgroundColor = "#f8d7da";
-                element.style.color = "#721c24";
-                element.innerText = element.innerText + " ❌ Not a red flag";
-            }
-            element.onclick = null; // disable multiple clicks
-        }
-    </script>
-
+   
 </body>
 </html>
