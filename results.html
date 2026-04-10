@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Identify Red Flags - Phishing Simulation</title>
+    <title>Simulation Results</title>
 
     <style>
         body {
@@ -9,208 +9,155 @@
             background-color: #f4f6f8;
             margin: 0;
             padding: 0;
-        }
-
-        .email-container {
-            max-width: 700px;
-            margin: 50px auto;
-            background-color: white;
-            border: 1px solid #d1d5da;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            background-color: #005eb8;
-            color: white;
-            padding: 15px;
-            border-radius: 6px;
             text-align: center;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         h1 {
-            font-size: 20px;
-            margin: 0;
+            color: #1a1a1a;
         }
 
-        p {
-            line-height: 1.6;
+        .score-box {
+            margin-top: 30px;
+            font-size: 18px;
+            line-height: 1.8;
         }
 
-        .warning {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 4px;
+        .accuracy {
+            font-size: 40px;
+            color: #005eb8;
             margin: 20px 0;
         }
 
-        .red-flags {
-            margin: 20px 0;
+        .risk {
+            font-size: 22px;
+            margin-top: 10px;
+            font-weight: bold;
         }
 
-        .red-flag {
-            display: inline-block;
-            margin: 8px;
-            padding: 10px 14px;
-            border: 1px solid #d93025;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #f8d7da;
-            color: #721c24;
+        .low {
+            color: #28a745;
         }
 
-        .correct {
-            background-color: #d4edda !important;
-            color: #155724 !important;
-            border-color: #c3e6cb !important;
+        .medium {
+            color: #ffc107;
         }
 
-        .incorrect {
-            background-color: #f8d7da !important;
-            color: #721c24 !important;
-            border-color: #f5c6cb !important;
+        .high {
+            color: #dc3545;
+        }
+
+        .feedback {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .feedback ul {
+            margin-top: 10px;
         }
 
         button {
+            margin-top: 30px;
+            padding: 14px 22px;
             background-color: #005eb8;
             color: white;
             border: none;
-            padding: 12px 20px;
+            border-radius: 6px;
             font-size: 16px;
-            border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
         }
 
         button:hover {
-            background-color: #004a94;
-        }
-
-        .back-link {
-            display: block;
-            margin-top: 15px;
-            text-align: center;
+            background-color: #004494;
         }
     </style>
 </head>
 
 <body>
 
-<div class="email-container">
+<div class="container">
 
-    <div class="header">
-        <h1>URGENT: Meningitis Vaccination Update</h1>
-    </div>
+    <h1>Simulation Results</h1>
 
-    <p>Dear Patient,</p>
+    <div class="accuracy" id="accuracy">0%</div>
 
-    <p>
-        You are required to book your meningitis vaccination immediately to remain registered with your GP.
-    </p>
+    <div class="score-box" id="scoreDetails"></div>
 
-    <p>
-        <a href="#">Click here to book now</a>
-    </p>
+    <div class="risk" id="riskLevel"></div>
 
-    <p>
-        Failure to act may result in removal from your GP surgery.
-    </p>
+    <div class="feedback" id="feedback"></div>
 
-    <div class="warning">
-        ⚠ This is a safe simulation. No real data is collected.
-    </div>
-
-    <h3>Identify the Red Flags</h3>
-
-    <div class="red-flags">
-
-        <!-- Correct flags -->
-        <span class="red-flag" onclick="checkFlag(this, true)">
-            Generic greeting ("Dear Patient")
-        </span>
-
-        <span class="red-flag" onclick="checkFlag(this, true)">
-            Urgency / Threat to act immediately
-        </span>
-
-        <span class="red-flag" onclick="checkFlag(this, true)">
-            Suspicious / unverified link
-        </span>
-
-        <!-- Safe items -->
-        <span class="red-flag" onclick="checkFlag(this, false)">
-            Official GP branding
-        </span>
-
-        <span class="red-flag" onclick="checkFlag(this, false)">
-            Proper formatting
-        </span>
-
-    </div>
-
-    <button onclick="finishSimulation()">
-        Finish Simulation
+    <button onclick="restartSimulation()">
+        Try Again
     </button>
-
-    <div class="back-link">
-        <a href="../notice.html">← Back to Notice Page</a>
-    </div>
 
 </div>
 
 <script>
-let totalOptions = 5;
-let totalCorrectFlags = 3;
+let result = JSON.parse(localStorage.getItem("simulationResult"));
 
-let correctClicks = 0;
-let wrongClicks = 0;
+if (!result) {
+    document.getElementById("accuracy").innerText = "No data";
+} else {
 
-let clickedElements = new Set();
+    let accuracy = result.accuracy;
 
-function checkFlag(element, isCorrect) {
+    document.getElementById("accuracy").innerText = accuracy + "%";
 
-    if (clickedElements.has(element)) return;
+    document.getElementById("scoreDetails").innerHTML =
+        `<strong>Correct:</strong> ${result.correct} <br>
+         <strong>Wrong:</strong> ${result.wrong} <br>
+         <strong>Missed:</strong> ${result.missed}`;
 
-    clickedElements.add(element);
+    let riskText = "";
+    let riskClass = "";
 
-    if (isCorrect) {
-        element.classList.add("correct");
-        correctClicks++;
+    if (accuracy >= 80) {
+        riskText = "Low Risk - Strong awareness";
+        riskClass = "low";
+    } else if (accuracy >= 50) {
+        riskText = "Medium Risk - Some vulnerability";
+        riskClass = "medium";
     } else {
-        element.classList.add("incorrect");
-        wrongClicks++;
+        riskText = "High Risk - Needs urgent training";
+        riskClass = "high";
     }
 
-    element.onclick = null;
+    let riskElement = document.getElementById("riskLevel");
+    riskElement.innerText = riskText;
+    riskElement.classList.add(riskClass);
+
+    // Feedback Section
+    let feedbackHTML = "<h3>Feedback</h3><ul>";
+
+    if (result.correct === 3) {
+        feedbackHTML += "<li>Excellent job identifying all phishing indicators.</li>";
+    } else {
+        if (result.missed > 0) {
+            feedbackHTML += "<li>You missed some key phishing warning signs.</li>";
+        }
+        if (result.wrong > 0) {
+            feedbackHTML += "<li>You selected items that are not actual phishing indicators.</li>";
+        }
+    }
+
+    feedbackHTML += "<li>Always verify links and avoid acting on urgent messages.</li>";
+    feedbackHTML += "</ul>";
+
+    document.getElementById("feedback").innerHTML = feedbackHTML;
 }
 
-function finishSimulation() {
-
-    // safe options = totalOptions - totalCorrectFlags
-    let totalSafeOptions = totalOptions - totalCorrectFlags;
-
-    // correct decisions include:
-    // - correct flags clicked
-    // - safe options NOT clicked
-    let correctAvoided = totalSafeOptions - wrongClicks;
-
-    let totalCorrectDecisions = correctClicks + correctAvoided;
-
-    let accuracy = (totalCorrectDecisions / totalOptions) * 100;
-
-    let result = {
-        correctClicks: correctClicks,
-        wrongClicks: wrongClicks,
-        correctAvoided: correctAvoided,
-        totalOptions: totalOptions,
-        accuracy: Math.round(accuracy)
-    };
-
-    localStorage.setItem("simulationResult", JSON.stringify(result));
-
-    window.location.href = "../results.html";
+function restartSimulation() {
+    localStorage.clear();
+    window.location.href = "index.html";
 }
 </script>
 
