@@ -164,25 +164,25 @@
 </div>
 
 <script>
-let score = 0;
-let maxScore = 3;
+let scoreCorrect = 0;
+let scoreWrong = 0;
+let totalCorrectFlags = 3;
 
-// prevent double counting
-let clickedFlags = new Set();
+// prevent double clicks
+let clicked = new Set();
 
 function checkFlag(element, isCorrect) {
 
-    if (clickedFlags.has(element)) {
-        return;
-    }
+    if (clicked.has(element)) return;
 
-    clickedFlags.add(element);
+    clicked.add(element);
 
     if (isCorrect) {
         element.classList.add("correct");
-        score++;
+        scoreCorrect++;
     } else {
         element.classList.add("incorrect");
+        scoreWrong++;
     }
 
     element.onclick = null;
@@ -190,8 +190,17 @@ function checkFlag(element, isCorrect) {
 
 function finishSimulation() {
 
-    localStorage.setItem("finalScore", score);
-    localStorage.setItem("maxScore", maxScore);
+    let missed = totalCorrectFlags - scoreCorrect;
+    let accuracy = (scoreCorrect / totalCorrectFlags) * 100;
+
+    let result = {
+        correct: scoreCorrect,
+        wrong: scoreWrong,
+        missed: missed,
+        accuracy: Math.round(accuracy)
+    };
+
+    localStorage.setItem("simulationResult", JSON.stringify(result));
 
     window.location.href = "results.html";
 }
