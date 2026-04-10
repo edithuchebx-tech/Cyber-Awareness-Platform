@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Meningitis Vaccination Email Simulation</title>
+    <title>Identify Red Flags - Phishing Simulation</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +12,7 @@
         }
 
         .email-container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 50px auto;
             background-color: white;
             border: 1px solid #d1d5da;
@@ -24,7 +25,7 @@
             background-color: #005eb8;
             color: white;
             padding: 15px;
-            border-radius: 6px 6px 0 0;
+            border-radius: 6px;
             text-align: center;
         }
 
@@ -37,16 +38,6 @@
             line-height: 1.6;
         }
 
-        a {
-            color: #005eb8;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
         .warning {
             background-color: #fff3cd;
             color: #856404;
@@ -56,73 +47,155 @@
         }
 
         .red-flags {
-            margin: 15px 0;
+            margin: 20px 0;
         }
 
         .red-flag {
             display: inline-block;
-            margin: 5px;
-            padding: 8px 12px;
+            margin: 8px;
+            padding: 10px 14px;
             border: 1px solid #d93025;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             background-color: #f8d7da;
             color: #721c24;
+            transition: 0.2s;
         }
 
-        .red-flag.correct {
-            background-color: #d4edda;
-            color: #155724;
-            border-color: #c3e6cb;
+        .red-flag:hover {
+            transform: scale(1.02);
+        }
+
+        .correct {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+            border-color: #f5c6cb !important;
+        }
+
+        button {
+            background-color: #005eb8;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #004a94;
         }
 
         .back-link {
             display: block;
-            margin-top: 20px;
+            margin-top: 15px;
             text-align: center;
         }
     </style>
 </head>
+
 <body>
 
-    <div class="email-container">
-        <div class="header">
-            <h1>URGENT: Meningitis Vaccination Update</h1>
-        </div>
+<div class="email-container">
 
-        <p>Dear Patient,</p>
-        <p>You are required to book your meningitis vaccination immediately to remain registered with your GP.</p>
-        <p><a href="#">Click here to book now</a></p>
-        <p>Failure to act may result in removal from your GP surgery.</p>
-
-        <hr>
-      
-      <div class="red-flags">
-            <span class="red-flag" onclick="checkFlag(this, true)">Generic greeting (“Dear Patient”)</span>
-            <span class="red-flag" onclick="checkFlag(this, true)">Urgency / threat to act</span>
-            <span class="red-flag" onclick="checkFlag(this, true)">Suspicious link</span>
-            <span class="red-flag" onclick="checkFlag(this, false)">GP logo</span>
-            <span class="red-flag" onclick="checkFlag(this, false)">Normal font</span>
-        </div>
-
-        <div class="back-link">
-            <a href="notice.html">← Back to Notice Page</a>
-        </div>
+    <div class="header">
+        <h1>URGENT: Meningitis Vaccination Update</h1>
     </div>
 
-    <script>
-        function checkFlag(element, isCorrect) {
-            if (isCorrect) {
-                element.classList.add('correct');
-                element.innerText = element.innerText + " ✅ Correct!";
-            } else {
-                element.style.backgroundColor = "#f8d7da";
-                element.style.color = "#721c24";
-                element.innerText = element.innerText + " ❌ Not a red flag";
-            }
-            element.onclick = null; // disable multiple clicks
-        }
-    </script>
+    <p>Dear Patient,</p>
+
+    <p>
+        You are required to book your meningitis vaccination immediately to remain registered with your GP.
+    </p>
+
+    <p>
+        <a href="#">Click here to book now</a>
+    </p>
+
+    <p>
+        Failure to act may result in removal from your GP surgery.
+    </p>
+
+    <div class="warning">
+        ⚠ This is a safe simulation. No real data is collected.
+    </div>
+
+    <h3>Identify the Red Flags</h3>
+
+    <div class="red-flags">
+
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Generic greeting ("Dear Patient")
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Urgency / Threat to act immediately
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Suspicious / unverified link
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, false)">
+            Official GP branding
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, false)">
+            Proper formatting
+        </span>
+
+    </div>
+
+    <button onclick="finishSimulation()">
+        Finish Simulation
+    </button>
+
+    <div class="back-link">
+        <a href="notice.html">← Back to Notice Page</a>
+    </div>
+
+</div>
+
+<script>
+let score = 0;
+let maxScore = 3;
+
+// prevent double counting
+let clickedFlags = new Set();
+
+function checkFlag(element, isCorrect) {
+
+    if (clickedFlags.has(element)) {
+        return;
+    }
+
+    clickedFlags.add(element);
+
+    if (isCorrect) {
+        element.classList.add("correct");
+        score++;
+    } else {
+        element.classList.add("incorrect");
+    }
+
+    element.onclick = null;
+}
+
+function finishSimulation() {
+
+    localStorage.setItem("finalScore", score);
+    localStorage.setItem("maxScore", maxScore);
+
+    window.location.href = "results.html";
+}
+</script>
 
 </body>
 </html>
