@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .score {
+            font-size: 40px;
+            color: #005eb8;
+        }
+
+        .risk {
+            font-size: 22px;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 18px;
+            background: #005eb8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Simulation Results</h1>
+
+    <div class="score" id="score">0</div>
+
+    <div class="risk" id="risk"></div>
+
+    <button onclick="restart()">
+        Try Again
+    </button>
+</div>
+
+<script>
+let score = localStorage.getItem("finalScore") || 0;
+
+document.getElementById("score").innerText = score + " / 3";
+
+let riskText = "";
+
+if (score == 3) {
+    riskText = "Low Risk - Excellent awareness";
+} else if (score == 2) {
+    riskText = "Medium Risk - Some awareness gaps";
+} else {
+    riskText = "High Risk - Needs training";
+}
+
+document.getElementById("risk").innerText = riskText;
+
+function restart() {
+    localStorage.clear();
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
