@@ -2,31 +2,115 @@
 <html>
 <head>
     <title>Phishing Email Simulation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        h2 {
+            color: #34495e;
+        }
+
+        p {
+            color: #555;
+        }
+
+        ul {
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #005eb8;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #004a94;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #005eb8;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 </head>
+
 <body>
 
-    <h1>Simulation: Phishing Email Example</h1>
+    <div class="container">
 
-    <p><strong>This is a safe simulation. Do not enter any real personal information.</strong></p>
+        <h1>Simulation: Phishing Email Example</h1>
 
-    
-    <hr>
+        <div class="warning">
+            ⚠ This is a safe simulation. Do not enter any real personal information.
+        </div>
 
-    <h2>🔍 What should you notice?</h2>
-    <ul>
-        <li>Creates urgency and fear</li>
-        <li>Generic greeting (“Dear Patient”)</li>
-        <li>Pressure to act immediately</li>
-    
-    </ul>
+        <hr>
 
-    <p><a href="index.html">← Go back to homepage</a></p>
+        <h2>🔍 What should you notice?</h2>
 
-     <p>
+        <ul>
+            <li>Creates urgency and fear</li>
+            <li>Generic greeting (“Dear Patient”)</li>
+            <li>Pressure to act immediately</li>
+        </ul>
+
         <button onclick="location.href='vaccination-email.html'">
             Start Safe Phishing Awareness Simulation
         </button>
-    </p>
+
+        <a href="index.html">← Go back to homepage</a>
+
+    </div>
 
 </body>
 </html>
