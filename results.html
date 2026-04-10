@@ -1,78 +1,161 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Results</title>
+    <title>Simulation Results</title>
+
     <style>
         body {
-            font-family: Arial;
-            background: #f4f6f8;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
             text-align: center;
-            padding: 50px;
         }
 
-        .card {
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
             background: white;
             padding: 40px;
-            max-width: 600px;
-            margin: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .score {
+        h1 {
+            color: #1a1a1a;
+        }
+
+        .score-box {
+            margin-top: 30px;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .accuracy {
             font-size: 40px;
             color: #005eb8;
+            margin: 20px 0;
         }
 
         .risk {
             font-size: 22px;
             margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .low {
+            color: #28a745;
+        }
+
+        .medium {
+            color: #ffc107;
+        }
+
+        .high {
+            color: #dc3545;
+        }
+
+        .feedback {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .feedback ul {
+            margin-top: 10px;
         }
 
         button {
-            margin-top: 20px;
-            padding: 12px 18px;
-            background: #005eb8;
+            margin-top: 30px;
+            padding: 14px 22px;
+            background-color: #005eb8;
             color: white;
             border: none;
             border-radius: 6px;
+            font-size: 16px;
             cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #004494;
         }
     </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
+
     <h1>Simulation Results</h1>
 
-    <div class="score" id="score">0</div>
+    <div class="accuracy" id="accuracy">0%</div>
 
-    <div class="risk" id="risk"></div>
+    <div class="score-box" id="scoreDetails"></div>
 
-    <button onclick="restart()">
+    <div class="risk" id="riskLevel"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button onclick="restartSimulation()">
         Try Again
     </button>
+
 </div>
 
 <script>
-let score = localStorage.getItem("finalScore") || 0;
+let result = JSON.parse(localStorage.getItem("simulationResult"));
 
-document.getElementById("score").innerText = score + " / 3";
-
-let riskText = "";
-
-if (score == 3) {
-    riskText = "Low Risk - Excellent awareness";
-} else if (score == 2) {
-    riskText = "Medium Risk - Some awareness gaps";
+if (!result) {
+    document.getElementById("accuracy").innerText = "No data";
 } else {
-    riskText = "High Risk - Needs training";
+
+    let accuracy = result.accuracy;
+
+    document.getElementById("accuracy").innerText = accuracy + "%";
+
+    document.getElementById("scoreDetails").innerHTML =
+        `<strong>Correct:</strong> ${result.correct} <br>
+         <strong>Wrong:</strong> ${result.wrong} <br>
+         <strong>Missed:</strong> ${result.missed}`;
+
+    let riskText = "";
+    let riskClass = "";
+
+    if (accuracy >= 80) {
+        riskText = "Low Risk - Strong awareness";
+        riskClass = "low";
+    } else if (accuracy >= 50) {
+        riskText = "Medium Risk - Some vulnerability";
+        riskClass = "medium";
+    } else {
+        riskText = "High Risk - Needs urgent training";
+        riskClass = "high";
+    }
+
+    let riskElement = document.getElementById("riskLevel");
+    riskElement.innerText = riskText;
+    riskElement.classList.add(riskClass);
+
+    // Feedback Section
+    let feedbackHTML = "<h3>Feedback</h3><ul>";
+
+    if (result.correct === 3) {
+        feedbackHTML += "<li>Excellent job identifying all phishing indicators.</li>";
+    } else {
+        if (result.missed > 0) {
+            feedbackHTML += "<li>You missed some key phishing warning signs.</li>";
+        }
+        if (result.wrong > 0) {
+            feedbackHTML += "<li>You selected items that are not actual phishing indicators.</li>";
+        }
+    }
+
+    feedbackHTML += "<li>Always verify links and avoid acting on urgent messages.</li>";
+    feedbackHTML += "</ul>";
+
+    document.getElementById("feedback").innerHTML = feedbackHTML;
 }
 
-document.getElementById("risk").innerText = riskText;
-
-function restart() {
+function restartSimulation() {
     localStorage.clear();
     window.location.href = "index.html";
 }
