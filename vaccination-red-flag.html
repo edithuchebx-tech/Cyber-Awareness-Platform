@@ -59,11 +59,6 @@
             cursor: pointer;
             background-color: #f8d7da;
             color: #721c24;
-            transition: 0.2s;
-        }
-
-        .red-flag:hover {
-            transform: scale(1.02);
         }
 
         .correct {
@@ -131,6 +126,7 @@
 
     <div class="red-flags">
 
+        <!-- Correct flags -->
         <span class="red-flag" onclick="checkFlag(this, true)">
             Generic greeting ("Dear Patient")
         </span>
@@ -143,6 +139,7 @@
             Suspicious / unverified link
         </span>
 
+        <!-- Safe items -->
         <span class="red-flag" onclick="checkFlag(this, false)">
             Official GP branding
         </span>
@@ -158,31 +155,32 @@
     </button>
 
     <div class="back-link">
-        <a href="notice.html">← Back to Notice Page</a>
+        <a href="../notice.html">← Back to Notice Page</a>
     </div>
 
 </div>
 
 <script>
-let scoreCorrect = 0;
-let scoreWrong = 0;
+let totalOptions = 5;
 let totalCorrectFlags = 3;
 
-// prevent double clicks
-let clicked = new Set();
+let correctClicks = 0;
+let wrongClicks = 0;
+
+let clickedElements = new Set();
 
 function checkFlag(element, isCorrect) {
 
-    if (clicked.has(element)) return;
+    if (clickedElements.has(element)) return;
 
-    clicked.add(element);
+    clickedElements.add(element);
 
     if (isCorrect) {
         element.classList.add("correct");
-        scoreCorrect++;
+        correctClicks++;
     } else {
         element.classList.add("incorrect");
-        scoreWrong++;
+        wrongClicks++;
     }
 
     element.onclick = null;
@@ -190,19 +188,29 @@ function checkFlag(element, isCorrect) {
 
 function finishSimulation() {
 
-    let missed = totalCorrectFlags - scoreCorrect;
-    let accuracy = (scoreCorrect / totalCorrectFlags) * 100;
+    // safe options = totalOptions - totalCorrectFlags
+    let totalSafeOptions = totalOptions - totalCorrectFlags;
+
+    // correct decisions include:
+    // - correct flags clicked
+    // - safe options NOT clicked
+    let correctAvoided = totalSafeOptions - wrongClicks;
+
+    let totalCorrectDecisions = correctClicks + correctAvoided;
+
+    let accuracy = (totalCorrectDecisions / totalOptions) * 100;
 
     let result = {
-        correct: scoreCorrect,
-        wrong: scoreWrong,
-        missed: missed,
+        correctClicks: correctClicks,
+        wrongClicks: wrongClicks,
+        correctAvoided: correctAvoided,
+        totalOptions: totalOptions,
         accuracy: Math.round(accuracy)
     };
 
     localStorage.setItem("simulationResult", JSON.stringify(result));
 
-    window.location.href = "results.html";
+    window.location.href = "../results.html";
 }
 </script>
 
