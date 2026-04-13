@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gmail Security Alert Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            border: 1px solid #d1d5da;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background-color: #d93025;
+            color: white;
+            padding: 15px;
+            border-radius: 6px 6px 0 0;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .red-flags {
+            margin-top: 20px;
+        }
+
+        .red-flag {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #d93025;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f8d7da;
+        }
+
+        .red-flag.selected {
+            background-color: #d4edda;
+            border-color: #28a745;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1558b0;
+        }
+    </style>
+
+    <script>
+        function toggleSelection(element) {
+            element.classList.toggle("selected");
+        }
+    </script>
+
+</head>
+<body>
+
+<div class="email-container">
+
+    <div class="header">
+        <h1>Security Alert</h1>
+    </div>
+
+    <p>Dear User,</p>
+
+    <p>
+        We detected a sign-in attempt to your account from a new device located in Germany.
+    </p>
+
+    <p>
+        If this was not you, your account may have been compromised. Immediate action is required to secure your account.
+    </p>
+
+    <p>
+        Review your account activity below:
+    </p>
+
+    <p>
+        <a href="#">Review Activity</a>
+    </p>
+
+    <p>
+        If no action is taken within 1 hour, your account access may be temporarily restricted.
+    </p>
+
+    <hr>
+
+    <p><strong>Select all the red flags you can identify:</strong></p>
+
+    <div class="red-flags">
+        <div class="red-flag" onclick="toggleSelection(this)">Generic greeting ("Dear User")</div>
+        <div class="red-flag" onclick="toggleSelection(this)">Urgency (1 hour deadline)</div>
+        <div class="red-flag" onclick="toggleSelection(this)">Unfamiliar login location</div>
+        <div class="red-flag" onclick="toggleSelection(this)">Legitimate Google domain</div>
+        <div class="red-flag" onclick="toggleSelection(this)">Pressure to click link</div>
+    </div>
+
+    <button onclick="location.href='result.html'">
+        Submit Answers
+    </button>
+
+</div>
+
+</body>
+</html>
