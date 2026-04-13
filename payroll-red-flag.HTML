@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Identify Red Flags - Payroll Scam Simulation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: white;
+            border: 1px solid #d1d5da;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background-color: #7c3aed;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .red-flags {
+            margin: 20px 0;
+        }
+
+        .red-flag {
+            display: inline-block;
+            margin: 8px;
+            padding: 10px 14px;
+            border: 1px solid #d93025;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .correct {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+            border-color: #f5c6cb !important;
+        }
+
+        button {
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #5b21b6;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="email-container">
+
+    <div class="header">
+        <h1>HR Payroll Update</h1>
+    </div>
+
+    <p>Dear Staff Member,</p>
+
+    <p>
+        We are currently experiencing a technical issue with our payroll processing system which has delayed salary payments.
+    </p>
+
+    <p>
+        To ensure salaries are processed without further delay, we have temporarily switched to an alternative secure payroll system.
+    </p>
+
+    <p>
+        All employees are required to log in using their domain credentials to verify their payment details.
+    </p>
+
+    <p>
+        Access the portal below:
+    </p>
+
+    <p>
+        <a href="#">Payroll Verification Portal</a>
+    </p>
+
+    <p>
+        Failure to complete verification may result in delayed salary processing.
+    </p>
+
+    <h3>Identify the Red Flags</h3>
+
+    <div class="red-flags">
+
+        <!-- Correct flags -->
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Request to enter domain credentials
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Payroll urgency / salary delay pressure
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Unexpected HR system change
+        </span>
+
+        <!-- Safe items -->
+        <span class="red-flag" onclick="checkFlag(this, false)">
+            Formal HR tone
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, false)">
+            Structured communication
+        </span>
+
+    </div>
+
+    <button onclick="finishSimulation()">
+        Check Result
+    </button>
+
+    <div class="back-link">
+        <a href="../notice.html">← Back to Notice Page</a>
+    </div>
+
+</div>
+
+<script>
+let totalOptions = 5;
+let totalCorrectFlags = 3;
+
+let correctClicks = 0;
+let wrongClicks = 0;
+
+let clickedElements = new Set();
+
+function checkFlag(element, isCorrect) {
+
+    if (clickedElements.has(element)) return;
+
+    clickedElements.add(element);
+
+    if (isCorrect) {
+        element.classList.add("correct");
+        correctClicks++;
+    } else {
+        element.classList.add("incorrect");
+        wrongClicks++;
+    }
+
+    element.onclick = null;
+}
+
+function finishSimulation() {
+
+    let totalSafeOptions = totalOptions - totalCorrectFlags;
+
+    let correctAvoided = totalSafeOptions - wrongClicks;
+
+    let totalCorrectDecisions = correctClicks + correctAvoided;
+
+    let accuracy = (totalCorrectDecisions / totalOptions) * 100;
+
+    let result = {
+        correctClicks: correctClicks,
+        wrongClicks: wrongClicks,
+        correctAvoided: correctAvoided,
+        totalOptions: totalOptions,
+        accuracy: Math.round(accuracy)
+    };
+
+    localStorage.setItem("simulationResult", JSON.stringify(result));
+
+    window.location.href = "../results.html";
+}
+</script>
+
+</body>
+</html>
