@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gmail Security Alert Simulation</title>
+    <title>Identify Red Flags - Gmail Simulation</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +12,7 @@
         }
 
         .email-container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 50px auto;
             background-color: white;
             border: 1px solid #d1d5da;
@@ -24,7 +25,7 @@
             background-color: #d93025;
             color: white;
             padding: 15px;
-            border-radius: 6px 6px 0 0;
+            border-radius: 6px;
             text-align: center;
         }
 
@@ -37,57 +38,56 @@
             line-height: 1.6;
         }
 
-        a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
         .red-flags {
-            margin-top: 20px;
+            margin: 20px 0;
         }
 
         .red-flag {
             display: inline-block;
-            margin: 5px;
-            padding: 10px;
+            margin: 8px;
+            padding: 10px 14px;
             border: 1px solid #d93025;
             border-radius: 5px;
             cursor: pointer;
             background-color: #f8d7da;
+            color: #721c24;
         }
 
-        .red-flag.selected {
-            background-color: #d4edda;
-            border-color: #28a745;
+        .correct {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+            border-color: #c3e6cb !important;
+        }
+
+        .incorrect {
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+            border-color: #f5c6cb !important;
         }
 
         button {
-            background-color: #1a73e8;
+            background-color: #d93025;
             color: white;
             border: none;
             padding: 12px 20px;
-            margin-top: 20px;
+            font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 20px;
         }
 
         button:hover {
-            background-color: #1558b0;
+            background-color: #b1271b;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
         }
     </style>
-
-    <script>
-        function toggleSelection(element) {
-            element.classList.toggle("selected");
-        }
-    </script>
-
 </head>
+
 <body>
 
 <div class="email-container">
@@ -107,7 +107,7 @@
     </p>
 
     <p>
-        Review your account activity below:
+        Please review your account activity below:
     </p>
 
     <p>
@@ -118,23 +118,93 @@
         If no action is taken within 1 hour, your account access may be temporarily restricted.
     </p>
 
-    <hr>
-
-    <p><strong>Select all the red flags you can identify:</strong></p>
+    <h3>Identify the Red Flags</h3>
 
     <div class="red-flags">
-        <div class="red-flag" onclick="toggleSelection(this)">Generic greeting ("Dear User")</div>
-        <div class="red-flag" onclick="toggleSelection(this)">Urgency (1 hour deadline)</div>
-        <div class="red-flag" onclick="toggleSelection(this)">Unfamiliar login location</div>
-        <div class="red-flag" onclick="toggleSelection(this)">Legitimate Google domain</div>
-        <div class="red-flag" onclick="toggleSelection(this)">Pressure to click link</div>
+
+        <!-- Correct flags -->
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Generic greeting ("Dear User")
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Urgency / time pressure (1 hour deadline)
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, true)">
+            Suspicious login location
+        </span>
+
+        <!-- Safe items -->
+        <span class="red-flag" onclick="checkFlag(this, false)">
+            Professional email formatting
+        </span>
+
+        <span class="red-flag" onclick="checkFlag(this, false)">
+            Clear message structure
+        </span>
+
     </div>
 
-    <button onclick="location.href='results.html'">
-        Submit Answers
+    <button onclick="finishSimulation()">
+        Check Result
     </button>
 
+    <div class="back-link">
+        <a href="../notice.html">← Back to Notice Page</a>
+    </div>
+
 </div>
+
+<script>
+let totalOptions = 5;
+let totalCorrectFlags = 3;
+
+let correctClicks = 0;
+let wrongClicks = 0;
+
+let clickedElements = new Set();
+
+function checkFlag(element, isCorrect) {
+
+    if (clickedElements.has(element)) return;
+
+    clickedElements.add(element);
+
+    if (isCorrect) {
+        element.classList.add("correct");
+        correctClicks++;
+    } else {
+        element.classList.add("incorrect");
+        wrongClicks++;
+    }
+
+    element.onclick = null;
+}
+
+function finishSimulation() {
+
+    let totalSafeOptions = totalOptions - totalCorrectFlags;
+
+    let correctAvoided = totalSafeOptions - wrongClicks;
+
+    let totalCorrectDecisions = correctClicks + correctAvoided;
+
+    let accuracy = (totalCorrectDecisions / totalOptions) * 100;
+
+    let result = {
+        correctClicks: correctClicks,
+        wrongClicks: wrongClicks,
+        correctAvoided: correctAvoided,
+        totalOptions: totalOptions,
+        accuracy: Math.round(accuracy)
+    };
+
+    localStorage.setItem("simulationResult", JSON.stringify(result));
+
+    window.location.href = "../results.html";
+}
+</script>
 
 </body>
 </html>
