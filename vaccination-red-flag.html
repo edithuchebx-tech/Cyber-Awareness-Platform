@@ -104,7 +104,7 @@
         <h1>URGENT: Meningitis Vaccination Update</h1>
     </div>
 
-     <p>Dear Patient,</p>
+    <p>Dear Patient,</p>
 
     <p>
         You are required to book your meningitis vaccination immediately to remain registered with your GP surgery. 
@@ -122,8 +122,6 @@
     <p>
         <a href="#">Click here to book now</a>
     </p>
-
-   
 
     <h3>Identify the Red Flags</h3>
 
@@ -191,28 +189,32 @@ function checkFlag(element, isCorrect) {
 
 function finishSimulation() {
 
-    // safe options = totalOptions - totalCorrectFlags
     let totalSafeOptions = totalOptions - totalCorrectFlags;
-
-    // correct decisions include:
-    // - correct flags clicked
-    // - safe options NOT clicked
     let correctAvoided = totalSafeOptions - wrongClicks;
-
     let totalCorrectDecisions = correctClicks + correctAvoided;
-
     let accuracy = (totalCorrectDecisions / totalOptions) * 100;
 
-    let result = {
+    let scenarioName = "Healthcare Scam";
+
+    let resultEntry = {
+        scenario: scenarioName,
         correctClicks: correctClicks,
         wrongClicks: wrongClicks,
         correctAvoided: correctAvoided,
         totalOptions: totalOptions,
-        accuracy: Math.round(accuracy)
+        accuracy: Math.round(accuracy),
+        date: new Date().toLocaleString()
     };
 
-    localStorage.setItem("simulationResult", JSON.stringify(result));
+    // Store latest result
+    localStorage.setItem("simulationResult", JSON.stringify(resultEntry));
 
+    // Store history
+    let history = JSON.parse(localStorage.getItem("simulationHistory")) || [];
+    history.push(resultEntry);
+    localStorage.setItem("simulationHistory", JSON.stringify(history));
+
+    // Redirect
     window.location.href = "../results.html";
 }
 </script>
