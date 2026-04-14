@@ -9,6 +9,9 @@
             background-color: #f4f6f8;
             margin: 0;
             padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
@@ -70,6 +73,32 @@
         button:hover {
             background-color: #004494;
         }
+
+        /* ✅ FOOTER STYLING */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer a {
+            color: #005eb8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        footer p {
+            margin: 8px 0 0;
+            font-size: 12px;
+            color: #777;
+        }
     </style>
 
 </head>
@@ -78,7 +107,7 @@
     <div class="container">
 
         <div class="ribbon">
-            This is a safe, educational simulation platform. No personal data is collected and no real credentials are required.
+            This is a safe, educational simulation platform. No sensitive data is collected and no real credentials are required.
         </div>
 
         <div class="content">
@@ -112,6 +141,12 @@
         </div>
 
     </div>
+
+    <!-- ✅ FOOTER -->
+    <footer>
+        <a href="privacy.html">Privacy Policy</a>
+        <p>© 2026 Aries TechSec. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
