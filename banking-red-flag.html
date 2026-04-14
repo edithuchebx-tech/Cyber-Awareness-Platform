@@ -200,8 +200,28 @@ function finishSimulation() {
         accuracy: Math.round(accuracy)
     };
 
-    localStorage.setItem("simulationResult", JSON.stringify(result));
 
+
+
+let scenarioName = "Gmail Security Alert"; // change per page
+
+let resultEntry = {
+    scenario: scenarioName,
+    correctClicks: correctClicks,
+    wrongClicks: wrongClicks,
+    correctAvoided: correctAvoided,
+    totalOptions: totalOptions,
+    accuracy: Math.round(accuracy),
+    date: new Date().toLocaleString()
+};
+
+let history = JSON.parse(localStorage.getItem("simulationHistory")) || [];
+
+history.push(resultEntry);
+
+localStorage.setItem("simulationHistory", JSON.stringify(history));
+
+    
     window.location.href = "../results.html";
 }
 </script>
