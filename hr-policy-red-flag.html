@@ -185,23 +185,31 @@ function checkFlag(element, isCorrect) {
 function finishSimulation() {
 
     let totalSafeOptions = totalOptions - totalCorrectFlags;
-
     let correctAvoided = totalSafeOptions - wrongClicks;
-
     let totalCorrectDecisions = correctClicks + correctAvoided;
-
     let accuracy = (totalCorrectDecisions / totalOptions) * 100;
 
-    let result = {
+    let scenarioName = "HR Policy Update";
+
+    let resultEntry = {
+        scenario: scenarioName,
         correctClicks: correctClicks,
         wrongClicks: wrongClicks,
         correctAvoided: correctAvoided,
         totalOptions: totalOptions,
-        accuracy: Math.round(accuracy)
+        accuracy: Math.round(accuracy),
+        date: new Date().toLocaleString()
     };
 
-    localStorage.setItem("simulationResult", JSON.stringify(result));
+    // Store current result (for results.html)
+    localStorage.setItem("simulationResult", JSON.stringify(resultEntry));
 
+    // Store history (for final dashboard)
+    let history = JSON.parse(localStorage.getItem("simulationHistory")) || [];
+    history.push(resultEntry);
+    localStorage.setItem("simulationHistory", JSON.stringify(history));
+
+    // Redirect to scenario result page
     window.location.href = "../results.html";
 }
 </script>
