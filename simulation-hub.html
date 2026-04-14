@@ -9,10 +9,9 @@
             background-color: #f4f6f8;
             margin: 0;
             padding: 0;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
         }
 
         .container {
@@ -23,6 +22,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             text-align: center;
+            margin: 40px auto;
         }
 
         h1 {
@@ -58,6 +58,25 @@
             margin-top: 25px;
         }
 
+        /* ✅ FOOTER STYLING */
+        footer {
+            margin-top: auto;
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        footer a {
+            color: #005eb8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -70,45 +89,23 @@
         <p>Select a scenario below to begin your awareness simulation:</p>
 
         <ul>
-            <li>
-                <a href="vaccination-email.html">🏥 Healthcare Scam</a>
-            </li>
-
-            <li>
-                <a href="gmail-security-alert.html">📧 Gmail Security Alert</a>
-            </li>
-
-            <li>
-                <a href="hr-policy-update.html">🧾 HR Policy Update Alert</a>
-            </li>
-
-            <li>
-                <a href="banking-alert.html">💰 Banking Alert</a>
-            </li>
-
-            <li>
-                <a href="password-compromise.html">🔐 Password Compromise Scam</a>
-            </li>
-
-            <li>
-                <a href="delivery-scam.html">📦 Delivery Scam</a>
-            </li>
-
-            <li>
-                <a href="payroll-scam.html">💼 Payroll Payment Issue Scam</a>
-            </li>
-            
+            <li><a href="vaccination-email.html">🏥 Healthcare Scam</a></li>
+            <li><a href="gmail-security-alert.html">📧 Gmail Security Alert</a></li>
+            <li><a href="hr-policy-update.html">🧾 HR Policy Update Alert</a></li>
+            <li><a href="banking-alert.html">💰 Banking Alert</a></li>
+            <li><a href="password-compromise.html">🔐 Password Compromise Scam</a></li>
+            <li><a href="delivery-scam.html">📦 Delivery Scam</a></li>
+            <li><a href="payroll-scam.html">💼 Payroll Payment Issue Scam</a></li>
         </ul>
 
         <a class="back" href="notice.html">← Back</a>
 
     </div>
 
+    <!-- ✅ FOOTER -->
     <footer>
         <a href="privacy.html">Privacy Policy</a>
     </footer>
 
 </body>
-
-    
 </html>
