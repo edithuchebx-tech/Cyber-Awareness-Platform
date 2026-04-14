@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Security Awareness Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #0f172a;
+            color: white;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .big {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+            background: white;
+            color: black;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+        }
+
+        .high { color: green; }
+        .medium { color: orange; }
+        .low { color: red; }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Security Awareness Final Dashboard</h1>
+
+<div class="grid">
+
+    <div class="card">
+        <div>Total Simulations</div>
+        <div class="big" id="total"></div>
+    </div>
+
+    <div class="card">
+        <div>Average Accuracy</div>
+        <div class="big" id="avg"></div>
+    </div>
+
+    <div class="card">
+        <div>High Risk Users</div>
+        <div class="big" id="risk"></div>
+    </div>
+
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Scenario</th>
+            <th>Accuracy</th>
+            <th>Correct</th>
+            <th>Wrong</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<button onclick="clearData()">Clear All Data</button>
+
+<script>
+let history = JSON.parse(localStorage.getItem("simulationHistory")) || [];
+
+let total = history.length;
+let avg = 0;
+let risk = 0;
+
+history.forEach(h => {
+    avg += h.accuracy;
+    if (h.accuracy < 50) risk++;
+});
+
+avg = total ? Math.round(avg / total) : 0;
+
+document.getElementById("total").innerText = total;
+document.getElementById("avg").innerText = avg + "%";
+document.getElementById("risk").innerText = risk;
+
+let table = document.getElementById("tableBody");
+
+history.reverse().forEach(h => {
+
+    let level = h.accuracy >= 80 ? "high" :
+                h.accuracy >= 50 ? "medium" : "low";
+
+    table.innerHTML += `
+        <tr>
+            <td>${h.scenario}</td>
+            <td class="${level}">${h.accuracy}%</td>
+            <td>${h.correctClicks}</td>
+            <td>${h.wrongClicks}</td>
+            <td>${h.date}</td>
+        </tr>
+    `;
+});
+
+function clearData() {
+    localStorage.removeItem("simulationHistory");
+    location.reload();
+}
+</script>
+
+</body>
+</html>
