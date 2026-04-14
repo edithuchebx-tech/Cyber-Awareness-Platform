@@ -185,43 +185,32 @@ function checkFlag(element, isCorrect) {
 function finishSimulation() {
 
     let totalSafeOptions = totalOptions - totalCorrectFlags;
-
     let correctAvoided = totalSafeOptions - wrongClicks;
-
     let totalCorrectDecisions = correctClicks + correctAvoided;
-
     let accuracy = (totalCorrectDecisions / totalOptions) * 100;
 
-    let result = {
+    // ✅ Scenario-specific result (for results.html)
+    let scenarioName = "Banking Alert";
+
+    let resultEntry = {
+        scenario: scenarioName,
         correctClicks: correctClicks,
         wrongClicks: wrongClicks,
         correctAvoided: correctAvoided,
         totalOptions: totalOptions,
-        accuracy: Math.round(accuracy)
+        accuracy: Math.round(accuracy),
+        date: new Date().toLocaleString()
     };
 
+    // ✅ Store latest result (used by results.html)
+    localStorage.setItem("simulationResult", JSON.stringify(resultEntry));
 
+    // ✅ Store history (used by final-result.html)
+    let history = JSON.parse(localStorage.getItem("simulationHistory")) || [];
+    history.push(resultEntry);
+    localStorage.setItem("simulationHistory", JSON.stringify(history));
 
-
-let scenarioName = "Gmail Security Alert"; // change per page
-
-let resultEntry = {
-    scenario: scenarioName,
-    correctClicks: correctClicks,
-    wrongClicks: wrongClicks,
-    correctAvoided: correctAvoided,
-    totalOptions: totalOptions,
-    accuracy: Math.round(accuracy),
-    date: new Date().toLocaleString()
-};
-
-let history = JSON.parse(localStorage.getItem("simulationHistory")) || [];
-
-history.push(resultEntry);
-
-localStorage.setItem("simulationHistory", JSON.stringify(history));
-
-    
+    // ✅ Correct flow
     window.location.href = "../results.html";
 }
 </script>
