@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - Phishing Simulation</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #334155;
+            text-align: left;
+        }
+
+        th {
+            background: #334155;
+        }
+
+        .high { color: #22c55e; }
+        .medium { color: #f59e0b; }
+        .low { color: #ef4444; }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .reset {
+            background: #ef4444;
+            color: white;
+        }
+
+        .nav {
+            background: #2563eb;
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Admin Security Dashboard</h1>
+
+    <div class="card">
+        <h2>All Simulation Attempts</h2>
+
+        <table id="logTable">
+            <tr>
+                <th>User</th>
+                <th>Scenario</th>
+                <th>Accuracy</th>
+                <th>Date</th>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Scenario Performance Summary</h2>
+        <div id="scenarioSummary"></div>
+    </div>
+
+    <button class="nav" onclick="goHome()">Go to Simulation Hub</button>
+    <button class="reset" onclick="resetAll()">Reset All Data</button>
+
+</div>
+
+<script>
+let history = JSON.parse(localStorage.getItem("simulationHistory")) || [];
+
+let table = document.getElementById("logTable");
+let summaryDiv = document.getElementById("scenarioSummary");
+
+let scenarioStats = {};
+
+// Populate table
+history.forEach(entry => {
+
+    let row = table.insertRow();
+
+    row.insertCell(0).innerText = entry.user || "User";
+    row.insertCell(1).innerText = entry.scenario;
+    row.insertCell(3).innerText = entry.date;
+
+    let accuracyCell = row.insertCell(2);
+
+    let level = entry.accuracy >= 80 ? "high" :
+                entry.accuracy >= 50 ? "medium" : "low";
+
+    accuracyCell.innerHTML = `<span class="${level}">${entry.accuracy}%</span>`;
+
+    // Aggregate stats
+    if (!scenarioStats[entry.scenario]) {
+        scenarioStats[entry.scenario] = {
+            total: 0,
+            count: 0
+        };
+    }
+
+    scenarioStats[entry.scenario].total += entry.accuracy;
+    scenarioStats[entry.scenario].count++;
+});
+
+// Build summary
+for (let scenario in scenarioStats) {
+
+    let avg = Math.round(
+        scenarioStats[scenario].total / scenarioStats[scenario].count
+    );
+
+    let level = avg >= 80 ? "high" :
+                avg >= 50 ? "medium" : "low";
+
+    let p = document.createElement("p");
+    p.innerHTML = `
+        ${scenario}: 
+        <span class="${level}">${avg}% average</span>
+    `;
+
+    summaryDiv.appendChild(p);
+}
+
+// Navigation
+function goHome() {
+    window.location.href = "simulation-hub.html";
+}
+
+// Reset
+function resetAll() {
+    if (confirm("Clear all simulation data?")) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+</script>
+
+</body>
+</html>
