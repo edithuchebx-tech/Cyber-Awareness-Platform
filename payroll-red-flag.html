@@ -189,23 +189,31 @@ function checkFlag(element, isCorrect) {
 function finishSimulation() {
 
     let totalSafeOptions = totalOptions - totalCorrectFlags;
-
     let correctAvoided = totalSafeOptions - wrongClicks;
-
     let totalCorrectDecisions = correctClicks + correctAvoided;
-
     let accuracy = (totalCorrectDecisions / totalOptions) * 100;
 
-    let result = {
+    let scenarioName = "Payroll Scam";
+
+    let resultEntry = {
+        scenario: scenarioName,
         correctClicks: correctClicks,
         wrongClicks: wrongClicks,
         correctAvoided: correctAvoided,
         totalOptions: totalOptions,
-        accuracy: Math.round(accuracy)
+        accuracy: Math.round(accuracy),
+        date: new Date().toLocaleString()
     };
 
-    localStorage.setItem("simulationResult", JSON.stringify(result));
+    // Store latest result (for results.html)
+    localStorage.setItem("simulationResult", JSON.stringify(resultEntry));
 
+    // Store history (for final-result.html)
+    let history = JSON.parse(localStorage.getItem("simulationHistory")) || [];
+    history.push(resultEntry);
+    localStorage.setItem("simulationHistory", JSON.stringify(history));
+
+    // Redirect to results page
     window.location.href = "../results.html";
 }
 </script>
